@@ -20,9 +20,7 @@ class Song(object):
 class YouTubeClient(object):
     def __init__(self):
         # youtube_dl default User-Agent can cause some json values to return as None, using Facebook's web crawler solves this.
-        # print(youtube_dl.utils.std_headers['User-Agent'])
         youtube_dl.utils.std_headers['User-Agent'] = "facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)"
-        # print(youtube_dl.utils.std_headers['User-Agent'])
         scopes = ["https://www.googleapis.com/auth/youtube.readonly"]
 
         # Disable OAuthlib's HTTPS verification when running locally.
