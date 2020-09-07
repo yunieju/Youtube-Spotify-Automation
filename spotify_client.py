@@ -22,11 +22,12 @@ class SpotifyClient(object):
         )
         response_json = response.json()
 
-        results = response_json['track']['items']
+        results = response_json['tracks']['items']
         if results:
-            return results[0]['id']
+            uri = results[0]['uri']
+            return uri
         else:
-            raise Exception(f"No song found for {track} by {artist}")
+            print(f"No song found for {track} by {artist}")
 
     def create_new_playlist(self, playlist_name):
         url = "https://api.spotify.com/v1/me/playlists"
@@ -42,16 +43,14 @@ class SpotifyClient(object):
             }
         )
         response_json = response.json()
-        print("Print Response object", response)
-        print("Print Response json", response_json)
         return response_json["id"]
 
-    def add_song_to_spotify(self, song_id, playlist_id):
-        url = f"https://api.spotify.com/v1/me/{playlist_id}/tracks"
+    def add_song_to_spotify(self, song_uri, playlist_id):
+        url = f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
         response = requests.put(
             url,
             json={
-                "ids": [song_id]
+                "uris": [song_uri]
             },
             headers={
                 "Content-Type": "application/json",

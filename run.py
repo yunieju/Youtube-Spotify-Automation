@@ -21,17 +21,20 @@ def run():
 
     playlist_name = input("Enter a name for your new playlist: ")
     playlist_id = spotify_client.create_new_playlist(playlist_name)
+    print(playlist_id)
 
     songs = youtube_client.get_songs_from_playlist(chosen_playlist.id)
     print(songs)
-    print(f"Attept to add {len(songs)}")
+    print(f"Attept to add {len(songs)} songs")
 
     success_count = 0
     for song in songs:
-        spotify_song_id = spotify_client.search_song(song.artist, song.track)
-        if spotify_song_id:
+        spotify_song_uri = spotify_client.search_song(song.artist, song.track)
+        if spotify_song_uri:
             success_count += 1
-            added_song = spotify_client.add_song_to_spotify(spotify_song_id, playlist_id)
+            added_song = spotify_client.add_song_to_spotify(spotify_song_uri, playlist_id)
             print(f"added {success_count} songs in your {playlist_name} playlist")
+
+
 if __name__ == '__main__':
     run()

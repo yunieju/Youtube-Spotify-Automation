@@ -1,4 +1,5 @@
 import os
+import re
 
 import google_auth_oauthlib.flow
 import googleapiclient.discovery
@@ -67,14 +68,22 @@ class YouTubeClient(object):
             video = youtube_dl.YoutubeDL({'quiet': True}).extract_info(youtube_url, download=False)
 
             title = video['title']
-
+            title = re.sub("[\(\[].*?[\)\]]", "", title)
             track = video['track']
             artist = video['artist']
-            print(video)
-            print(track, artist)
 
             if artist and track:
                 songs.append(Song(artist, track))
 
-        return songs
+            # if video uploaders didn't provide sufficient information, it cannot extract artist and track info
+            # extract artist and track info manually from video title
+            # it only supports "artist - track title" convention
+            elif title:
+                if '-' in title:
+                    temp = title.split('-')
+                    artist = temp[0]
+                    track = temp[1]
 
+                    songs.append(Song(artist, track))
+
+        return songs
