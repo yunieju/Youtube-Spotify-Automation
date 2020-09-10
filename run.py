@@ -27,13 +27,14 @@ def run():
     print(songs)
     print(f"Attept to add {len(songs)} songs")
 
-    success_count = 0
+    uris = []
     for song in songs:
         spotify_song_uri = spotify_client.search_song(song.artist, song.track)
-        if spotify_song_uri:
-            success_count += 1
-            added_song = spotify_client.add_song_to_spotify(spotify_song_uri, playlist_id)
-            print(f"added {success_count} songs in your {playlist_name} playlist")
+        uris.append(spotify_song_uri)
+        print(uris)
+        count = len(uris)
+    added_song = spotify_client.add_song_to_spotify(uris, playlist_id)
+    print(f"added {count} songs in your {playlist_name} playlist")
 
 
 if __name__ == '__main__':

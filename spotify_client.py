@@ -11,8 +11,6 @@ class SpotifyClient(object):
             artist
         )
         print(track, artist)
-        # query = urllib.parse.quote(f'{artist} {track}')
-        # url = f"https://api.spotify.com/v1/search?q={query}$type=track"
         response = requests.get(
             query,
             headers= {
@@ -45,12 +43,12 @@ class SpotifyClient(object):
         response_json = response.json()
         return response_json["id"]
 
-    def add_song_to_spotify(self, song_uri, playlist_id):
+    def add_song_to_spotify(self, song_uris, playlist_id):
         url = f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
         response = requests.put(
             url,
             json={
-                "uris": [song_uri]
+                "uris": song_uris
             },
             headers={
                 "Content-Type": "application/json",
